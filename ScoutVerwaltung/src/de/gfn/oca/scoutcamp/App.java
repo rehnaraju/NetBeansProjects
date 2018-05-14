@@ -2,11 +2,19 @@ package de.gfn.oca.scoutcamp;
 
 import de.gfn.oca.scoutcamp.entity.Scout;
 import de.gfn.oca.scoutcamp.helper.ScoutHelper;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,6 +40,29 @@ public class App {
         System.out.println(CONTROLS);
         
         App app = new App();
+    
+         //TODO: Scouts aus Datenbank oder Datei lesen
+         
+        try(FileInputStream fis=new FileInputStream("data.ser");
+                ObjectInputStream ois =new ObjectInputStream(fis)){
+            app.scouts=(List<Scout>)ois.readObject();
+            
+        }
+        catch(FileNotFoundException ex)
+        {
+            System.out.println("Keine Daten");
+        }
+        catch(IOException ex)
+        {
+            System.out.println("can't read this file");
+        }
+        catch(ClassNotFoundException ex)
+        {
+            System.out.println("can't find class");
+        }
+         
+        
+        
         
         //TODO: Scouts aus Datenbank oder Datei lesen
         boolean exit = false;
@@ -59,8 +90,24 @@ public class App {
                     break;
             }
         }
-        
-        //TODO: Scouts in die Datenbank oder Datei schreiben
-        System.out.println("END");
     }
 }
+    
+        
+    
+    
+      /*  private void read()
+        {
+        //TODO: Scouts in die Datenbank oder Datei schreiben
+        try(FileOutputStream fos=new FileOutputStream("data.ser");
+                ObjectOutputStream oos=new ObjectOutputStream(fos))
+        {
+            oos.writeObject(app.scouts);
+        }
+        
+      catch (IOException ex) {
+            System.out.println("");
+        }
+        }*/
+    
+
